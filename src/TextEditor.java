@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 
 public class TextEditor implements ActionListener {
 
@@ -84,13 +85,51 @@ public class TextEditor implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == newFile){
-
+            TextEditor  newTextEditor = new TextEditor();
         }
+
         if(e.getSource() == openFile){
+            JFileChooser fileChooser = new JFileChooser("C:");
+            int chooseOption = fileChooser.showOpenDialog(null);
+
+            if(chooseOption == JFileChooser.APPROVE_OPTION){
+                File file = fileChooser.getSelectedFile();
+                String filePath = file.getPath();
+                try {
+                    BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
+                    String intermidiate = "",output = "";
+                    while((intermidiate = bufferedReader.readLine())!= null){
+                        output += intermidiate + "\n";
+                    }
+
+                    textArea.setText(output);
+                    myFrame.setTitle(filePath);
+
+                }catch (Exception exception){
+                    System.out.println(exception);
+                }
+            }
 
         }
-        if(e.getSource() == saveFile){
 
+        if(e.getSource() == saveFile){
+            JFileChooser fileChooser = new JFileChooser("C:");
+            fileChooser.setApproveButtonText("Save");
+            int chooseOption = fileChooser.showSaveDialog(null);
+
+            if(chooseOption == JFileChooser.APPROVE_OPTION){
+                File file = new File(fileChooser.getSelectedFile().getAbsoluteFile()+".txt");
+
+                try {
+                    BufferedWriter outfile = null;
+                    outfile = new BufferedWriter(new FileWriter(file));
+                    textArea.write(outfile);
+                    outfile.close();
+
+                }catch (Exception exception){
+                    System.out.println(exception);
+                }
+            }
         }
 
         //edit menu
