@@ -12,8 +12,8 @@ public class TextEditor implements ActionListener {
 
     JMenuBar menuBar;
     JMenu file,edit;
-    JMenuItem newFile,openFile,saveFile,printFile;
-    JMenuItem cut,copy,selectAll,paste,close;
+    JMenuItem newFile,newWindowFile,openFile,saveFile,printFile,close;
+    JMenuItem cut,copy,selectAll,paste;
     JTextArea textArea;
 
     // Constructor
@@ -35,20 +35,26 @@ public class TextEditor implements ActionListener {
         //initialize file option;
 
         newFile = new JMenuItem("New");
+        newWindowFile = new JMenuItem("New window");
         openFile = new JMenuItem("Open");
         saveFile = new JMenuItem("Save");
         printFile = new JMenuItem("Print");
+        close = new JMenuItem("Exit");
+
 
         newFile.addActionListener(this);
+        newWindowFile.addActionListener(this);
         openFile.addActionListener(this);
         saveFile.addActionListener(this);
         printFile.addActionListener(this);
+        close.addActionListener(this);
 
         file.add(newFile);
+        file.add(newWindowFile);
         file.add(openFile);
         file.add(saveFile);
         file.add(printFile);
-
+        file.add(close);
 
         //initialize edit option;
 
@@ -56,19 +62,19 @@ public class TextEditor implements ActionListener {
         copy = new JMenuItem("Copy");
         paste = new JMenuItem("Paste");
         selectAll = new JMenuItem("Select All");
-        close = new JMenuItem("Close");
+
 
         cut.addActionListener(this);
         copy.addActionListener(this);
         paste.addActionListener(this);
         selectAll.addActionListener(this);
-        close.addActionListener(this);
+
 
         edit.add(cut);
         edit.add(copy);
         edit.add(paste);
         edit.add(selectAll);
-        edit.add(close);
+
 
 
 
@@ -85,15 +91,15 @@ public class TextEditor implements ActionListener {
         panel.add(scrollPane);
 
         //Icon
-        Image img = Toolkit.getDefaultToolkit().getImage("resource\\clipart1986179.png");
+        Image img = Toolkit.getDefaultToolkit().getImage("resource\\Notepad.png");
         myFrame.setIconImage(img);
 
 
         myFrame.add(panel);
         myFrame.setJMenuBar(menuBar);
-        myFrame.setBounds(100,100,400,400);
+        myFrame.setBounds(90,60,900,600);
         myFrame.setVisible(true);
-        myFrame.setTitle("Text Editor");
+        myFrame.setTitle("Untitle - Text Editor");
     }
 
     public static void main(String[] args) {
@@ -103,7 +109,11 @@ public class TextEditor implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == newFile){
-            TextEditor  newTextEditor = new TextEditor();
+            textArea.setText("");
+        }
+
+        if(e.getSource() == newWindowFile){
+            TextEditor  newWindow = new TextEditor();
         }
 
         if(e.getSource() == openFile){
