@@ -7,14 +7,16 @@ import java.io.*;
 
 public class TextEditor implements ActionListener {
 
+    // Frame
     JFrame myFrame;
 
     JMenuBar menuBar;
     JMenu file,edit;
-    JMenuItem newFile,openFile,saveFile;
+    JMenuItem newFile,openFile,saveFile,printFile;
     JMenuItem cut,copy,selectAll,paste,close;
     JTextArea textArea;
 
+    // Constructor
     TextEditor(){
         //initialize frame;
         myFrame = new JFrame();
@@ -35,15 +37,17 @@ public class TextEditor implements ActionListener {
         newFile = new JMenuItem("New");
         openFile = new JMenuItem("Open");
         saveFile = new JMenuItem("Save");
+        printFile = new JMenuItem("Print");
 
         newFile.addActionListener(this);
         openFile.addActionListener(this);
         saveFile.addActionListener(this);
+        printFile.addActionListener(this);
 
         file.add(newFile);
         file.add(openFile);
         file.add(saveFile);
-
+        file.add(printFile);
 
 
         //initialize edit option;
@@ -76,9 +80,13 @@ public class TextEditor implements ActionListener {
 
         JScrollPane scrollPane = new JScrollPane(textArea,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         JPanel panel = new JPanel();
-        panel.setBorder(new EmptyBorder(5,5,5,5));
+        panel.setBorder(new EmptyBorder(2,2,2,2));
         panel.setLayout(new BorderLayout(0,0));
         panel.add(scrollPane);
+
+        //Icon
+        Image img = Toolkit.getDefaultToolkit().getImage("resource\\clipart1986179.png");
+        myFrame.setIconImage(img);
 
 
         myFrame.add(panel);
@@ -105,6 +113,7 @@ public class TextEditor implements ActionListener {
             if(chooseOption == JFileChooser.APPROVE_OPTION){
                 File file = fileChooser.getSelectedFile();
                 String filePath = file.getPath();
+                String fileNameToShow = file.getName();
                 try {
                     BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
                     String intermidiate = "",output = "";
@@ -112,8 +121,9 @@ public class TextEditor implements ActionListener {
                         output += intermidiate + "\n";
                     }
 
+
                     textArea.setText(output);
-                    myFrame.setTitle(filePath);
+                    myFrame.setTitle(fileNameToShow);
 
                 }catch (Exception exception){
                     System.out.println(exception);
@@ -129,16 +139,27 @@ public class TextEditor implements ActionListener {
 
             if(chooseOption == JFileChooser.APPROVE_OPTION){
                 File file = new File(fileChooser.getSelectedFile().getAbsoluteFile()+".txt");
-
+                String fileNameToShow = file.getName();
                 try {
                     BufferedWriter outfile = null;
                     outfile = new BufferedWriter(new FileWriter(file));
                     textArea.write(outfile);
+                    myFrame.setTitle(fileNameToShow);
                     outfile.close();
 
                 }catch (Exception exception){
                     System.out.println(exception);
                 }
+            }
+        }
+
+        if(e.getSource() == printFile){
+            try {
+                // print the file
+                textArea.print();
+            }
+            catch (Exception evt) {
+                JOptionPane.showMessageDialog(myFrame, evt.getMessage());
             }
         }
 
